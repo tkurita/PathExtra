@@ -79,12 +79,12 @@ bail:
 	if (dict == nil) return nil;
 	
 	NSString *resolved_path = self;
-	if ([[dict objectForKey:@"WasAliased"] boolValue]) {
-		resolved_path = [[dict objectForKey:@"ResolvedURL"] path];
+	if ([dict[@"WasAliased"] boolValue]) {
+		resolved_path = [dict[@"ResolvedURL"] path];
 	}
 	
 	NSMutableDictionary *result = [dict mutableCopy];
-	[result setObject:resolved_path forKey:@"ResolvedPath"];
+	result[@"ResolvedPath"] = resolved_path;
 	return result;
 }
 
@@ -172,7 +172,7 @@ bail:
 	NSFileManager *file_manager = [NSFileManager defaultManager];
 	short i = 1;
 	while ([file_manager fileExistsAtPath:newpath]){
-		NSNumber *numberSuffix = [NSNumber numberWithShort:i++];
+		NSNumber *numberSuffix = @(i++);
 		newname = [self stringByAppendingPathExtension:[numberSuffix stringValue]];
 		if (has_suffix) 
 			newname = [newname stringByAppendingPathExtension:theSuffix];
@@ -196,7 +196,7 @@ bail:
 	NSFileManager *file_manager = [NSFileManager defaultManager];
 	short i = 1;
 	while ([file_manager fileExistsAtPath:newpath] || [exceptNames containsObject:newname]){
-		NSNumber *numberSuffix = [NSNumber numberWithShort:i++];
+		NSNumber *numberSuffix = @(i++);
 		newname = [self stringByAppendingPathExtension:[numberSuffix stringValue]];
 		if (need_suffix) newname = [newname stringByAppendingPathExtension:theSuffix];
 		newpath = [dirPath stringByAppendingPathComponent:newname];
@@ -375,8 +375,7 @@ static NSString *xattrError(const int err, const char *myPath)
 		int err = errno;
 		NSString *errMsg = xattrError(err, path);
 		if(error) *error = [NSError errorWithDomain:NSPOSIXErrorDomain code:err 
-									userInfo:[NSDictionary dictionaryWithObjectsAndKeys:self, 
-										NSFilePathErrorKey, errMsg, NSLocalizedDescriptionKey, nil]];
+									userInfo:@{NSFilePathErrorKey: self, NSLocalizedDescriptionKey: errMsg}];
         return nil;
 	}
 	char *buffer = (char *)NSZoneMalloc(NSDefaultMallocZone(), sizeof(char)*bufsize);
@@ -387,8 +386,7 @@ static NSString *xattrError(const int err, const char *myPath)
         int err = errno;
         NSString *errMsg = xattrError(err, path);
         if(error) *error = [NSError errorWithDomain:NSPOSIXErrorDomain code:err 
-								userInfo:[NSDictionary dictionaryWithObjectsAndKeys:self, 
-										NSFilePathErrorKey, errMsg, NSLocalizedDescriptionKey, nil]];
+								userInfo:@{NSFilePathErrorKey: self, NSLocalizedDescriptionKey: errMsg}];
         NSZoneFree(NSDefaultMallocZone(), buffer);
         return nil;
     }
@@ -414,8 +412,7 @@ static NSString *xattrError(const int err, const char *myPath)
 		int err = errno;
 		NSString *errMsg = xattrError(err, path);
 		if(error) *error = [NSError errorWithDomain:NSPOSIXErrorDomain code:err 
-							userInfo:[NSDictionary dictionaryWithObjectsAndKeys:self, 
-							NSFilePathErrorKey, errMsg, NSLocalizedDescriptionKey, nil]];
+							userInfo:@{NSFilePathErrorKey: self, NSLocalizedDescriptionKey: errMsg}];
 		success = NO;
 	} else {
 		success = YES;
