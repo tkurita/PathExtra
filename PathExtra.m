@@ -1,9 +1,23 @@
 #import "PathExtra.h"
-//#import "NSURL+NDCarbonUtilities.h"
-
 #include <sys/param.h>
 #include <unistd.h>
 #include <sys/xattr.h>
+
+#ifndef AH_RETAIN
+#if __has_feature(objc_arc)
+#define AH_RETAIN(x) x
+#define AH_RELEASE(x)
+#define AH_AUTORELEASE(x) x
+#define AH_SUPER_DEALLOC
+#else
+#define __AH_WEAK
+#define AH_WEAK assign
+#define AH_RETAIN(x) [x retain]
+#define AH_RELEASE(x) [x release]
+#define AH_AUTORELEASE(x) [x autorelease]
+#define AH_SUPER_DEALLOC [super dealloc]
+#endif
+#endif
 
 @implementation NSURL (PathExtra)
 - (NSDictionary *)infoResolvingAliasFile
@@ -392,7 +406,7 @@ static NSString *xattrError(const int err, const char *myPath)
     }
 	
 	 NSData *attribute = [[NSData alloc] initWithBytesNoCopy:buffer length:bufsize];
-	 return attribute;
+	 return AH_AUTORELEASE(attribute);
 }
 
 - (BOOL)setExtendAttribute:(NSData *)aValue forName:(NSString *)attrName
