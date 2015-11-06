@@ -107,41 +107,6 @@ bail:
     return [[NSURL fileURLWithPath:self] isVisible];
 }
 
-- (BOOL)setStationeryFlag:(BOOL)newFlag
-{
-	// It looks stationery flag can't not be changed by CoreFoundation or Cocoa
-    FSRef ref;
-	//OSStatus status = FSPathMakeRef((UInt8 *)[self UTF8String], &ref, NULL);
-	Boolean is_directory;
-	OSStatus status = FSPathMakeRef((UInt8 *)[self fileSystemRepresentation], &ref, &is_directory);
-	NSAssert(status == noErr, @"Error in FSPathMakeRef");
-	NSAssert1(is_directory == NO, @"Can't set stationary flag to directory %@", self);
-	
-	FSCatalogInfo catalogInfo;
-	OSErr err = FSGetCatalogInfo (&ref,
-								  kFSCatInfoFinderInfo,
-								  &catalogInfo,
-								  NULL, NULL, NULL);
-	NSAssert(err == noErr, @"Error in FSGetCatalogInfo");
-	FileInfo *theFileInfo = (FileInfo *)(&catalogInfo.finderInfo);
-	BOOL is_stationery = ((theFileInfo->finderFlags & kIsStationery) == kIsStationery);
-
-	BOOL result = NO;
-	if (newFlag != is_stationery) {
-		if (newFlag) {
-			theFileInfo->finderFlags |= kIsStationery;
-		}
-		else {
-			theFileInfo->finderFlags &= (~kIsStationery);
-		}
-		err = FSSetCatalogInfo (&ref, kFSCatInfoFinderInfo, &catalogInfo);
-		NSAssert(err == noErr, @"Error in FSGetCatalogInfo");
-		result = YES;
-	}
-	
-	return result;
-}
-
 - (NSString *)uniqueName
 {
 	NSFileManager *file_manager = [NSFileManager defaultManager];

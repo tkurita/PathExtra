@@ -12,7 +12,6 @@
 
 - (NSDictionary *)infoResolvingAliasFile;
 - (BOOL)isVisible;
-- (BOOL)setStationeryFlag:(BOOL)newFlag;
 - (NSString *)cleanPath;
 - (NSString *)relativePathWithBase:(NSString *)inBase;
 - (NSString *)uniqueName;
