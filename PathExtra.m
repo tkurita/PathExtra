@@ -115,7 +115,9 @@ bail:
 	NSString *dir_path = [self stringByDeletingLastPathComponent];
 	NSString *file_suffix = [self pathExtension];
 	NSString *base_name = [[self lastPathComponent] stringByDeletingPathExtension];
-	NSString *copy_suffix_format = NSLocalizedString(@"%@ copy", @"The suffix for the dupulicated items");
+	NSString *copy_suffix_format = NSLocalizedStringFromTable(@"%@ copy",
+                                                              @"PathExtra_Localizable", 
+                                                              @"The suffix for the dupulicated items");
 	NSString *new_path = [dir_path stringByAppendingPathComponent:
 					[NSString stringWithFormat:copy_suffix_format, base_name]];
 	BOOL has_suffix = ([file_suffix length] > 0);
@@ -125,7 +127,9 @@ bail:
 	
 	int n = 1;
 	NSString *new_name;
-	copy_suffix_format = NSLocalizedString(@"%@ copy%d", @"The suffix for the dupulicated items");
+	copy_suffix_format = NSLocalizedStringFromTable(@"%@ copy%d",
+                                                    @"PathExtra_Localizable", 
+                                                    @"The suffix for the dupulicated items");
 	while ([file_manager fileExistsAtPath:new_path]) {
 		new_name = [NSString stringWithFormat:copy_suffix_format, base_name, n++ ];
 		if (has_suffix) 
