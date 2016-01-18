@@ -5,6 +5,7 @@
 - (NSDictionary *)infoResolvingAliasFile;
 - (NSURL *)resolveAliasFileIsStale:(BOOL *)isStale error:(NSError **)error;
 - (BOOL)isVisible;
+- (BOOL)isFolder;
 
 @end
 

@@ -82,6 +82,18 @@ bail:
     return ![is_hidden boolValue];
 }
 
+- (BOOL)isFolder
+{
+    NSError *err = nil;
+    NSNumber *result = nil;
+    
+    if (![self getResourceValue:&result
+                         forKey:NSURLIsDirectoryKey error:&err]) {
+        NSLog(@"error in isFolder : %@", err);
+        return NO;
+    }
+    return [result boolValue];
+}
 @end
 
 @implementation NSString (PathExtra)
