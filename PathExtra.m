@@ -432,4 +432,9 @@ static NSString *xattrError(const int err, const char *myPath)
 	
 }
 
+- (NSURL *)fileURL
+{
+    return [NSURL fileURLWithPath:self];
+}
+
 @end

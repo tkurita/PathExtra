@@ -32,5 +32,6 @@
 
 - (NSString *)hfsPath;
 - (NSString *)posixPath;
+- (NSURL *)fileURL;
 
 @end
