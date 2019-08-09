@@ -50,7 +50,8 @@ bail:
         @"WasAliased":dict[NSURLIsAliasFileKey]};
 }
 
-- (NSURL *)resolveAliasFileIsStale:(BOOL *)isStale error:(NSError **)error;
+- (NSURL *)resolveAliasFileIsStale:(BOOL *)isStale options:(NSURLBookmarkResolutionOptions)options
+                             error:(NSError **)error;
 {
     NSNumber *is_alias = nil;
     if (![self getResourceValue:&is_alias forKey:NSURLIsAliasFileKey error:error]) {
@@ -62,13 +63,18 @@ bail:
     if (*error) {
         return nil;
     }
-
-    NSURL *url = [NSURL URLByResolvingBookmarkData:bmdata options:0 relativeToURL:NULL
+    
+    NSURL *url = [NSURL URLByResolvingBookmarkData:bmdata options:options relativeToURL:NULL
                                bookmarkDataIsStale:isStale error:error];
     if (*error) {
         return nil;
     }
     return url;
+}
+
+- (NSURL *)resolveAliasFileIsStale:(BOOL *)isStale error:(NSError **)error;
+{
+    return [self resolveAliasFileIsStale:isStale options:0 error:error];
 }
 
 - (BOOL)isVisible
