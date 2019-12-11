@@ -29,9 +29,10 @@
 						transverseLink:(BOOL)resolveLink error:(NSError **)error;
 - (BOOL)setExtendAttribute:(NSData *)aValue forName:(NSString *)attrName
 						transverseLink:(BOOL)resolveLink error:(NSError **)error;
-
+#if 0 //kCFURLPOSIXPathStyle is deprecated in 10.9
 - (NSString *)hfsPath;
 - (NSString *)posixPath;
+#endif
 - (NSURL *)fileURL;
 
 @end
