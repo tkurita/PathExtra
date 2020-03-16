@@ -421,7 +421,7 @@ static NSString *xattrError(const int err, const char *myPath)
 	return success;
 }
 
-#if 0 //kCFURLPOSIXPathStyle is deprecated in 10.9
+#if useDeprecated //kCFURLPOSIXPathStyle is deprecated in 10.9
 - (NSString *)hfsPath
 {
 	CFURLRef an_url = CFURLCreateWithFileSystemPath(NULL, (CFStringRef)self, 
